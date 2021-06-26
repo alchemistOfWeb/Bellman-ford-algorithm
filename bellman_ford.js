@@ -81,66 +81,86 @@ class BellmanFord {
     * get_algo_generator(matrix, start) {
         let verticesCount = matrix.length;
 
+        
         let lambdas = [];
         let prev = [];
-
+        
         for (let i = 0; i < verticesCount; i++) {
             lambdas.push(Infinity);
             prev.push(null);
         }
 
+        
+        
         lambdas[start] = 0;
         let stop = false;
 
-        yield this.make_info_obj('1', 'Ищем все пути с колличеством ребер < 1', lambdas);
-        
-        // let k = 1;
-        // while (k < verticesCount && !stop) {
-        //     k++;
+        let msg 
+                = '';
+
+        // generate visualisation {
+        // it is not a part of the algorithm   
+        this.messager.prepare_results_table(lambdas);
+        yield this.make_info_obj('1', msg, lambdas);
         // }
+
         for (let k = 1; k < verticesCount; k++) {
+
+            // if there was no relaxation of an edge (in the previous iteration) then we break the cycle
             if (stop) {
                 break;
             }
             stop = true;
-
-            let msg = `Ищем все пути с колличеством ребер < ${k+1}\n`;
+            
+            // generate visualisation {
+            // it is not a part of the algorithm
             yield this.make_info_obj(k+1, msg, lambdas);
+            // }
 
             for (let i = 0; i < verticesCount; i++) {
 
-                // yield this.make_info_obj(`${k+1}:${i+1}`, `subiteration`, lambdas);
-
                 for (let j = 0; j < verticesCount; j++) {
 
+                    let sum = lambdas[j] + matrix[j][i];
+                    
+                    // generate visualisation {
+                    // it is not a part of the algorithm
                     let msg_2 = '';
                     let msg_3 = '';
-
-                    let sum = lambdas[j] + matrix[j][i];
-
+                        
                     if (sum < Infinity) {
-                        console.log('sum:     ...', sum);
-                        console.log(matrix[j][i]);
 
-                        msg_2 = `пробуем прибавлять к пройденному пути до точки ${j} соседние ребра\n lambdas[${j}] + matrix[${j}, ${i}] \n ${lambdas[j]} + ${matrix[j][i]} = ${sum}\n`;
+                        this.messager.set_matrix_active(j, i);
+
+                        this.messager.activate_lambdas_col(i, 'lambdas-i');
+                        this.messager.activate_lambdas_col(j, 'lambdas-j');
+
+                        msg_2 = `пробуем прибавлять к пройденному пути до точки ${j} соседние ребра<br>
+                                 <span class="text-dark">lambdas[j]</span> + 
+                                 <span class="text-warning">matrix[j, i]</span> <br> 
+                                 <span class="text-dark">${lambdas[j]}</span> + 
+                                 <span class="text-warning">${matrix[j][i]}</span> = ${sum}<br>`;
 
                         yield this.make_info_obj(`${k} : i=${i} : j=${j}`, msg + msg_2, lambdas);
 
-                        this.messager.set_matrix_active(j, i);
-                        msg_3 = `затем сравнимаем ${sum} < ${lambdas[i]} ?\n`;
+                        msg_3 = `затем сравнимаем ${sum} < 
+                                 <span class="text-danger">${lambdas[i] == Infinity ? '∞' : lambdas[i]} ?</span><br>`;
+
                         yield this.make_info_obj(`${k} : i=${i} : j=${j}`, msg + msg_2 + msg_3, lambdas);
                         yield this.make_info_obj(`${k} : i=${i} : j=${j}`, msg + msg_2 + msg_3, lambdas);
                         yield this.make_info_obj(`${k} : i=${i} : j=${j}`, msg + msg_2 + msg_3, lambdas);
                         yield this.make_info_obj(`${k} : i=${i} : j=${j}`, msg + msg_2 + msg_3, lambdas);
 
-                        
-                        
                     }
+                    // }
 
                     if (sum < lambdas[i]) {
                         lambdas[i] = sum;
                         stop = false;
                         prev[i-1] = j;
+
+                        // generate visualisation {
+                        // it is not a part of the algorithm
 
                         let filtered_prev = Array.from(new Set(prev));
                         let path = filtered_prev.filter((val, ind) => {
@@ -153,12 +173,15 @@ class BellmanFord {
                         this.graph.red_paths = path;
 
 
-                        let msg_4 = `lambdas[i] теперь = ${sum}`;
+                        let msg_4 = `<span class="text-danger">lambdas[i] теперь = ${sum}</span>`;
                         yield this.make_info_obj(`${k} : i=${i} : j=${j}`, msg + msg_2 + msg_3 + msg_4, lambdas);
+                        yield this.make_info_obj(`${k} : i=${i} : j=${j}`, msg + msg_2 + msg_3 + msg_4, lambdas);
+                        yield this.make_info_obj(`${k} : i=${i} : j=${j}`, msg + msg_2 + msg_3 + msg_4, lambdas);
+
+                        // }
                     }
                 }
             }
-            // console.log('кратчайшие пути: ', lambdas);
         }
         
         yield this.make_info_obj('end', 'конец работы алгоритма', lambdas, true);

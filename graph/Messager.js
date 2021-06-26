@@ -5,6 +5,8 @@ class Messager {
     thead = null;
     tbody = null;
 
+    td_lambdas = {};
+
     constructor($messager_node, matrix=null) {
         this.node = $messager_node;
         this.iteration = $messager_node.find('.iteration');
@@ -18,15 +20,14 @@ class Messager {
     }
 
     set_iteration(iteration) {
-        this.iteration.text(iteration);
+        this.iteration.html(iteration);
     }
 
     set_message(message) {
-        this.message.text(message);
+        this.message.html(message);
     }
 
-    set_results_table(lambdas_arr) {
-
+    prepare_results_table(lambdas_arr) {
         let thead_html = '';
         let tbody_html = '';    
 
@@ -37,6 +38,14 @@ class Messager {
 
         this.thead.html(thead_html);
         this.tbody.html(tbody_html);
+    }
+
+    set_results_table(lambdas_arr) {
+        lambdas_arr.forEach((value, index) => {
+            let td = this.tbody.find(`td:nth-child(${index+1})`);
+            // console.log()
+            td.text(value == Infinity ? '∞' : value);
+        });
     }
 
     prepare_matrix(matrix) {
@@ -90,7 +99,16 @@ class Messager {
         td.addClass('table-active');
         this.active_table_point = td;
         
-        // console.log(td[0]);
-        console.log('row: ' + row, 'col: ' + col);
+    }
+
+    activate_lambdas_col(col, class_name='lambdas-i') {
+        if (this.td_lambdas[class_name]) {
+            this.td_lambdas[class_name].removeClass(class_name);
+        }
+        // this.td_lambdas[class_name]
+
+        this.td_lambdas[class_name] = this.tbody.find(`td:nth-child(${col+1})`);
+        this.td_lambdas[class_name].addClass(class_name);
+        console.log(this.td_lambdas[class_name][0]);
     }
 }

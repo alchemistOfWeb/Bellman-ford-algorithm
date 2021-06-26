@@ -14,3 +14,15 @@ tr > .table-active {
 tr > th {
     background-color: rgb(183, 200, 209) !important; 
 }
+
+tr > .lambdas-i {
+    box-shadow: inset 0px 0px 1px 3px rgb(177, 43, 33);
+}
+
+tr > .lambdas-j {
+    box-shadow: inset 0px 0px 4px 2px rgb(27, 29, 26);
+}
+
+tr > .lambdas-i.lambdas-j {
+    box-shadow: inset 0px 0px 1px 3px rgb(177, 43, 33), inset 0px 0px 4px 2px rgb(27, 29, 26);;
+}
