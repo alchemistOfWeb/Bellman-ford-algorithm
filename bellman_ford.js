@@ -6,13 +6,12 @@ class BellmanFord {
     ctx = null;
     messager = null;
 
-    speed = 100;
+    speed = 500;
 
     constructor($canvas, $messager, $btn) {
         this.canvas = $canvas;
         this.ctx = $canvas[0].getContext('2d');
         this.messager = new Messager($messager);
-        console.log(this.messager.message[0])
         this.btn = $btn;
 
         this.ctx.lineWidth = 2;
@@ -54,7 +53,6 @@ class BellmanFord {
         }
         let info_obj = step.value;
 
-        // console.info(info_obj.iteration, info_obj.message, info_obj.lambdas);
         this.update(info_obj);
         setTimeout(this.step.bind(this), this.speed);
     }
@@ -101,7 +99,6 @@ class BellmanFord {
         //     k++;
         // }
         for (let k = 1; k < verticesCount; k++) {
-            // console.info(`Ищем все пути с колличеством ребер < ${k+1}`);
             if (stop) {
                 break;
             }
@@ -111,36 +108,39 @@ class BellmanFord {
             yield this.make_info_obj(k+1, msg, lambdas);
 
             for (let i = 0; i < verticesCount; i++) {
-                // console.info(`subiteration ${i+1}`)
 
                 // yield this.make_info_obj(`${k+1}:${i+1}`, `subiteration`, lambdas);
 
                 for (let j = 0; j < verticesCount; j++) {
-                    // console.info(`subiteration ${i+1} : ${j+1}`)
 
                     let msg_2 = '';
                     let msg_3 = '';
 
                     let sum = lambdas[j] + matrix[j][i];
+
                     if (sum < Infinity) {
+                        console.log('sum:     ...', sum);
+                        console.log(matrix[j][i]);
 
                         msg_2 = `пробуем прибавлять к пройденному пути до точки ${j} соседние ребра\n lambdas[${j}] + matrix[${j}, ${i}] \n ${lambdas[j]} + ${matrix[j][i]} = ${sum}\n`;
 
                         yield this.make_info_obj(`${k} : i=${i} : j=${j}`, msg + msg_2, lambdas);
 
+                        this.messager.set_matrix_active(j, i);
                         msg_3 = `затем сравнимаем ${sum} < ${lambdas[i]} ?\n`;
                         yield this.make_info_obj(`${k} : i=${i} : j=${j}`, msg + msg_2 + msg_3, lambdas);
                         yield this.make_info_obj(`${k} : i=${i} : j=${j}`, msg + msg_2 + msg_3, lambdas);
                         yield this.make_info_obj(`${k} : i=${i} : j=${j}`, msg + msg_2 + msg_3, lambdas);
                         yield this.make_info_obj(`${k} : i=${i} : j=${j}`, msg + msg_2 + msg_3, lambdas);
+
+                        
                         
                     }
 
                     if (sum < lambdas[i]) {
                         lambdas[i] = sum;
                         stop = false;
-                        prev[i-1] = j;  
-                        // console.info('prev: ', prev);
+                        prev[i-1] = j;
 
                         let filtered_prev = Array.from(new Set(prev));
                         let path = filtered_prev.filter((val, ind) => {
@@ -151,8 +151,7 @@ class BellmanFord {
 
                         // determine the edges that will be red
                         this.graph.red_paths = path;
-                        
-                        // console.info(paths);
+
 
                         let msg_4 = `lambdas[i] теперь = ${sum}`;
                         yield this.make_info_obj(`${k} : i=${i} : j=${j}`, msg + msg_2 + msg_3 + msg_4, lambdas);

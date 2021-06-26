@@ -22,8 +22,6 @@ class Point {
     }
 
     draw_self(ctx) {
-        console.log(`draw point on x: ${this.x}, y: ${this.y}`)
-
         ctx.beginPath()
         ctx.fillStyle = '#70d78f';
 

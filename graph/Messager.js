@@ -78,5 +78,19 @@ class Messager {
             return; 
         }
 
+        if (this.active_table_point) {
+            this.active_table_point.removeClass('table-active');
+            // console.log(this.active_table_point[0]);
+
+        }
+        
+        let tr = this.matrix_table.find(`tbody>tr:nth-child(${row+1})`);
+        let td = tr.find(`td:nth-child(${col+2})`);
+
+        td.addClass('table-active');
+        this.active_table_point = td;
+        
+        // console.log(td[0]);
+        console.log('row: ' + row, 'col: ' + col);
     }
 }

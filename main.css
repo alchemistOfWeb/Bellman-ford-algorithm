@@ -1,0 +1,16 @@
+.bf-canvas {
+    width: 500px; 
+    height: 300px;
+}
+
+tr > .table-active {
+    /* border-color: brown;
+    border-width: 3px;
+    border-style: solid; */
+
+    box-shadow: inset 0px 0px 1px 3px rgb(243, 166, 42);
+}
+
+tr > th {
+    background-color: rgb(183, 200, 209) !important; 
+}

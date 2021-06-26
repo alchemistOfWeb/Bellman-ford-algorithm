@@ -23,7 +23,6 @@ class Arrow {
     }
 
     draw_self(options={}) {
-        // console.info(options);
         let headlen = 10;
         let dx = this.end.x - this.start.x;
         let dy = this.end.y - this.start.y;
@@ -46,7 +45,6 @@ class Arrow {
         this.ctx.strokeStyle = 'black';
 
         $.each(options, (option, value) => {
-            console.info(option, value);
             this.ctx[this.associates[option]] = value;
         });
 

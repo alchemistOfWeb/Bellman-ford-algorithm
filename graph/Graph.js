@@ -62,7 +62,6 @@ class Graph {
 
                 if (red_paths_str.includes(from_to_str)) {
                     options.color = 'red';
-                    console.log(red_paths_str, from_to_str);
                 }
                 
                 arrow.draw_self(options);
