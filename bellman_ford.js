@@ -6,7 +6,7 @@ class BellmanFord {
     ctx = null;
     messager = null;
 
-    speed = 500;
+    speed = 200;
 
     constructor($canvas, $messager, $btn) {
         this.canvas = $canvas;
@@ -31,12 +31,6 @@ class BellmanFord {
 
     }
 
-    /**
-     * 
-     * @param {array} matrix 
-     * @param {number} start 
-     * @param {object} points 
-     */
     start() {
         console.info('start');
 
@@ -107,9 +101,7 @@ class BellmanFord {
         for (let k = 1; k < verticesCount; k++) {
 
             // if there was no relaxation of an edge (in the previous iteration) then we break the cycle
-            if (stop) {
-                break;
-            }
+            
             stop = true;
             
             // generate visualisation {
@@ -172,7 +164,6 @@ class BellmanFord {
                         // determine the edges that will be red
                         this.graph.red_paths = path;
 
-
                         let msg_4 = `<span class="text-danger">lambdas[i] теперь = ${sum}</span>`;
                         yield this.make_info_obj(`${k} : i=${i} : j=${j}`, msg + msg_2 + msg_3 + msg_4, lambdas);
                         yield this.make_info_obj(`${k} : i=${i} : j=${j}`, msg + msg_2 + msg_3 + msg_4, lambdas);
@@ -181,6 +172,10 @@ class BellmanFord {
                         // }
                     }
                 }
+            }
+
+            if (stop) {
+                break;
             }
         }
         

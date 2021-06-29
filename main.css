@@ -26,3 +26,7 @@ tr > .lambdas-j {
 tr > .lambdas-i.lambdas-j {
     box-shadow: inset 0px 0px 1px 3px rgb(177, 43, 33), inset 0px 0px 4px 2px rgb(27, 29, 26);;
 }
+
+.message {
+    height: 150px;
+}

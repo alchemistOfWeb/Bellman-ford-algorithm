@@ -13,8 +13,6 @@ class Point {
      * @param {int} index 
      */
     constructor(x, y, index) {
-        // this.ctx = ctx;
-
         this.positions.x = x;
         this.positions.y = y;
 

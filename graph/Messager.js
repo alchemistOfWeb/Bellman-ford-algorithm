@@ -15,8 +15,6 @@ class Messager {
 
         this.thead = this.results_table.find('thead>tr');
         this.tbody = this.results_table.find('tbody>tr');
-
-        
     }
 
     set_iteration(iteration) {
@@ -43,7 +41,6 @@ class Messager {
     set_results_table(lambdas_arr) {
         lambdas_arr.forEach((value, index) => {
             let td = this.tbody.find(`td:nth-child(${index+1})`);
-            // console.log()
             td.text(value == Infinity ? '∞' : value);
         });
     }
@@ -69,7 +66,6 @@ class Messager {
         this.matrix.forEach((row, row_i) => {
             let tr = $('<tr/>');
             
-            
             let tr_html = '';
             tr_html += `<th> ${row_i} </th>`;
 
@@ -89,8 +85,6 @@ class Messager {
 
         if (this.active_table_point) {
             this.active_table_point.removeClass('table-active');
-            // console.log(this.active_table_point[0]);
-
         }
         
         let tr = this.matrix_table.find(`tbody>tr:nth-child(${row+1})`);
@@ -105,7 +99,6 @@ class Messager {
         if (this.td_lambdas[class_name]) {
             this.td_lambdas[class_name].removeClass(class_name);
         }
-        // this.td_lambdas[class_name]
 
         this.td_lambdas[class_name] = this.tbody.find(`td:nth-child(${col+1})`);
         this.td_lambdas[class_name].addClass(class_name);
