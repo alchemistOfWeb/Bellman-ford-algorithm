@@ -117,33 +117,36 @@ class BellmanFord {
                     
                     // generate visualisation {
                     // it is not a part of the algorithm
-                    let msg_2 = '';
-                    let msg_3 = '';
+                    
+                    this.messager.set_matrix_active(j, i);
+
+                    this.messager.activate_lambdas_col(i, 'lambdas-i');
+                    this.messager.activate_lambdas_col(j, 'lambdas-j');
+
+                    let msg_2 = `пробуем прибавлять к пройденному пути до точки ${j} соседние ребра<br>
+                            <span class="text-dark">lambdas[j]</span> + 
+                            <span class="text-warning">matrix[j, i]</span> <br> 
+                            <span class="text-dark">${lambdas[j]}</span> + 
+                            <span class="text-warning">${matrix[j][i]}</span> = ${sum}<br>`;
+
+                    let msg_3 = `затем сравнимаем ${sum} < 
+                            <span class="text-danger">${lambdas[i] == Infinity ? '∞' : lambdas[i]} ?</span><br>`;
+                 
+
+                    yield this.make_info_obj(`${k} : i=${i} : j=${j}`, msg + msg_2, lambdas);
+                    yield this.make_info_obj(`${k} : i=${i} : j=${j}`, msg + msg_2 + msg_3, lambdas);
                         
                     if (sum < Infinity) {
 
-                        this.messager.set_matrix_active(j, i);
-
-                        this.messager.activate_lambdas_col(i, 'lambdas-i');
-                        this.messager.activate_lambdas_col(j, 'lambdas-j');
-
-                        msg_2 = `пробуем прибавлять к пройденному пути до точки ${j} соседние ребра<br>
-                                 <span class="text-dark">lambdas[j]</span> + 
-                                 <span class="text-warning">matrix[j, i]</span> <br> 
-                                 <span class="text-dark">${lambdas[j]}</span> + 
-                                 <span class="text-warning">${matrix[j][i]}</span> = ${sum}<br>`;
-
                         yield this.make_info_obj(`${k} : i=${i} : j=${j}`, msg + msg_2, lambdas);
-
-                        msg_3 = `затем сравнимаем ${sum} < 
-                                 <span class="text-danger">${lambdas[i] == Infinity ? '∞' : lambdas[i]} ?</span><br>`;
-
+                       
                         yield this.make_info_obj(`${k} : i=${i} : j=${j}`, msg + msg_2 + msg_3, lambdas);
                         yield this.make_info_obj(`${k} : i=${i} : j=${j}`, msg + msg_2 + msg_3, lambdas);
                         yield this.make_info_obj(`${k} : i=${i} : j=${j}`, msg + msg_2 + msg_3, lambdas);
                         yield this.make_info_obj(`${k} : i=${i} : j=${j}`, msg + msg_2 + msg_3, lambdas);
 
                     }
+
                     // }
 
                     if (sum < lambdas[i]) {
